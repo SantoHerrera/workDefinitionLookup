@@ -1,10 +1,12 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img alt="Vue logo" src="./assets/logo.png" />
     <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
-    <input type="text" id="searchThis"><button v-on:click="submit">submit</button>
-    <p>definition: {{definition}} </p>
-  </div> 
+    <input type="text" id="searchThis" />
+    <button v-on:click="submit">submit</button>s
+
+    <p>{{definition}}</p>
+  </div>
 </template>
 
 <script>
@@ -13,26 +15,63 @@
 //let key = '226a8d2c-2502-4efd-ac72-5a26eb317695'
 
 export default {
-  name: 'App',
+  name: "App",
   text: "",
-  definition: "",
+  definition: "fuck",
+  jsonKey: "226a8d2c-2502-4efd-ac72-5a26eb317695",
   methods: {
     submit: function() {
-      let inputText = document.getElementById("searchThis")
+      let inputText = document.getElementById("searchThis");
       //console.log(inputText.value)
       this.text = inputText.value;
-      inputText.value = ""
+      inputText.value = "";
       //console.log(inputText)
-      this.test(this.text, "spanish", "226a8d2c-2502-4efd-ac72-5a26eb317695")
+      this.fuckIfIKnow();
     },
-    test: function(word, ref, key) {
-      let url = "https://dictionaryapi.com/api/v3/references/" +  ref +  "/json/" + word + "?key=" + key;
+    newURL: function(word, ref, key) {
+      let url =
+        "https://dictionaryapi.com/api/v3/references/" +
+        ref +
+        "/json/" +
+        word +
+        "?key=" +
+        key;
 
-      console.log(url)
-      console.log("something  chagned")
+      return url;
+    },
+    fuckIfIKnow: function() {
+      let requestURL = this.newURL(
+        "porque",
+        "spanish",
+        "226a8d2c-2502-4efd-ac72-5a26eb317695"
+      );
+
+      let request = new XMLHttpRequest();
+      request.open("GET", requestURL);
+
+      request.responseType = "json";
+      request.send();
+
+      request.onload = function() {
+        const superHeroes = request.response;
+        
+        //console.log(superHeroes[0].shortdef)
+
+        let def = superHeroes[0].shortdef;
+
+        let newDef = "";
+
+        for(let i = 0; i < def.length; i++) {
+          newDef +=  `${def[i]} ,`
+        }
+
+        console.log(newDef)
+
+        this.definition = newDef;
+      };
     }
   }
-}
+};
 /*
 <?php
 
@@ -50,3 +89,10 @@ export default {
 </script>
 //key spanish
 //226a8d2c-2502-4efd-ac72-5a26eb317695
+
+
+console.log((function() {
+	let one = 1
+  let zero = 0;
+  return one > 0;
+})());
