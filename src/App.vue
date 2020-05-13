@@ -1,24 +1,62 @@
 <template>
   <div id="app">
+    <!--
     <img alt="Vue logo" src="./assets/logo.png" />
-    <!--<HelloWorld msg="Welcome to Your Vue.js App"/>-->
+    -->
     <input type="text" id="searchThis" />
-    <button v-on:click="submit">submit</button>s
+    <button v-on:click="submit">submit</button>
 
-    <p>{{definition}}</p>
+    <ul>
+      <listitem v-for="(item, index) in inventory" :item="item" :key="index"></listitem>
+    </ul>
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
+// export default {
+//   name: "#vue-instance",
+//   components: {
+//     listitem: ListItem
+//   },
 
-//let key = '226a8d2c-2502-4efd-ac72-5a26eb317695'
+//   data: {
+//     inventory: [
+//       { name: "MacBook Air", price: 1000 },
+//       { name: "MacBook Pro", price: 1800 },
+//       { name: "Lenovo W530", price: 1400 },
+//       { name: "Acer Aspire One", price: 300 }
+//     ]
+//   }
+// };
+
+const ListItem = {
+  props: ["item"],
+  computed: {
+    price() {
+      return this.item.price.toFixed(2);
+    }
+  },
+  template: "<li><b>{{ item.name }}</b>: {{ price }}</li>"
+};
 
 export default {
+  components: {
+    listitem: ListItem
+  },
   name: "App",
   text: "",
   definition: "fuck",
   jsonKey: "226a8d2c-2502-4efd-ac72-5a26eb317695",
+  data: function() {
+    return {
+      inventory: [
+        { name: "MacBook Air", price: 1000 },
+        { name: "MacBook Pro", price: 1800 },
+        { name: "Lenovo W530", price: 1400 },
+        { name: "Acer Aspire One", price: 300 }
+      ]
+    };
+  },
   methods: {
     submit: function() {
       let inputText = document.getElementById("searchThis");
@@ -54,18 +92,16 @@ export default {
 
       request.onload = function() {
         const superHeroes = request.response;
-        
+
         //console.log(superHeroes[0].shortdef)
 
         let def = superHeroes[0].shortdef;
 
         let newDef = "";
 
-        for(let i = 0; i < def.length; i++) {
-          newDef +=  `${def[i]} ,`
+        for (let i = 0; i < def.length; i++) {
+          newDef += `${def[i]} ,`;
         }
-
-        console.log(newDef)
 
         this.definition = newDef;
       };
