@@ -1,70 +1,40 @@
 <template>
   <div id="app">
-    <!--
-    <img alt="Vue logo" src="./assets/logo.png" />
-    -->
     <input type="text" id="searchThis" />
-    <button v-on:click="submit">submit</button>
+    <button v-on:click="clearSearchBar">submit</button>
 
-    <ul>
-      <listitem v-for="(item, index) in inventory" :item="item" :key="index"></listitem>
-    </ul>
+    <p>Definition's</p>
+    <ol>
+      <li v-for="(item, index ) in inventory" :item="item" v-bind:key="index">{{ item.definition }}</li>
+    </ol>
   </div>
 </template>
 
 <script>
-// export default {
-//   name: "#vue-instance",
-//   components: {
-//     listitem: ListItem
-//   },
-
-//   data: {
-//     inventory: [
-//       { name: "MacBook Air", price: 1000 },
-//       { name: "MacBook Pro", price: 1800 },
-//       { name: "Lenovo W530", price: 1400 },
-//       { name: "Acer Aspire One", price: 300 }
-//     ]
-//   }
-// };
-
-const ListItem = {
-  props: ["item"],
-  computed: {
-    price() {
-      return this.item.price.toFixed(2);
-    }
-  },
-  template: "<li><b>{{ item.name }}</b>: {{ price }}</li>"
-};
-
 export default {
-  components: {
-    listitem: ListItem
-  },
   name: "App",
-  text: "",
+  text: "Search Word",
   definition: "fuck",
   jsonKey: "226a8d2c-2502-4efd-ac72-5a26eb317695",
   data: function() {
     return {
       inventory: [
-        { name: "MacBook Air", price: 1000 },
-        { name: "MacBook Pro", price: 1800 },
-        { name: "Lenovo W530", price: 1400 },
-        { name: "Acer Aspire One", price: 300 }
+        { name: "MacBook Air", price: 1000, definition: "no word given yet" }
       ]
     };
   },
   methods: {
-    submit: function() {
+    clearSearchBar: function() {
       let inputText = document.getElementById("searchThis");
       //console.log(inputText.value)
+
+      const word = inputText.value;
+
       this.text = inputText.value;
       inputText.value = "";
-      //console.log(inputText)
-      this.fuckIfIKnow();
+
+      
+      this.getWordDefinition(word);
     },
     newURL: function(word, ref, key) {
       let url =
@@ -77,9 +47,9 @@ export default {
 
       return url;
     },
-    fuckIfIKnow: function() {
+    getWordDefinition: function(word) {
       let requestURL = this.newURL(
-        "porque",
+        word,
         "spanish",
         "226a8d2c-2502-4efd-ac72-5a26eb317695"
       );
@@ -91,20 +61,18 @@ export default {
       request.send();
 
       request.onload = function() {
-        const superHeroes = request.response;
+        const allDefinitions = request.response;
 
-        //console.log(superHeroes[0].shortdef)
+        console.log(allDefinitions, " ignore this")
 
-        let def = superHeroes[0].shortdef;
+        console.log("workks? ", this.inventory[0].name);
 
-        let newDef = "";
-
-        for (let i = 0; i < def.length; i++) {
-          newDef += `${def[i]} ,`;
-        }
-
-        this.definition = newDef;
+        //console.log(allDefinitions[0].shortdef)
+        //console.log(allDefinitions);
+        //console.log(this.data.inventory);
       };
+
+      console.log("workks? ", this.inventory[0].name);
     }
   }
 };
@@ -123,12 +91,3 @@ export default {
 ?>
 */
 </script>
-//key spanish
-//226a8d2c-2502-4efd-ac72-5a26eb317695
-
-
-console.log((function() {
-	let one = 1
-  let zero = 0;
-  return one > 0;
-})());
