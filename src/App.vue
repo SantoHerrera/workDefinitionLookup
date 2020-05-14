@@ -34,7 +34,7 @@ export default {
       inputText.value = "";
 
       
-      this.getWordDefinition(word);
+      this.getWordDefinitionV2(word);
     },
     newURL: function(word, ref, key) {
       let url =
@@ -47,32 +47,16 @@ export default {
 
       return url;
     },
-    getWordDefinition: function(word) {
+    getWordDefinitionV2: function(word) {
       let requestURL = this.newURL(
         word,
         "spanish",
         "226a8d2c-2502-4efd-ac72-5a26eb317695"
       );
 
-      let request = new XMLHttpRequest();
-      request.open("GET", requestURL);
-
-      request.responseType = "json";
-      request.send();
-
-      request.onload = function() {
-        const allDefinitions = request.response;
-
-        console.log(allDefinitions, " ignore this")
-
-        console.log("workks? ", this.inventory[0].name);
-
-        //console.log(allDefinitions[0].shortdef)
-        //console.log(allDefinitions);
-        //console.log(this.data.inventory);
-      };
-
-      console.log("workks? ", this.inventory[0].name);
+      fetch(requestURL)
+      .then(response => response.json())
+      .then(data => console.log(data))
     }
   }
 };
