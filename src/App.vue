@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <h1>English/Spanish dictionary</h1>
+    <h3>search word to get definition in other language</h3>
+
     <input type="text" id="searchThis" />
     <button v-on:click="clearSearchBar">submit</button>
 
-    <p>Definition's</p>
+    <p>Word Searched: {{wordSearched}}</p>
     <ol>
       <li v-for="(item, index ) in inventory" :item="item" v-bind:key="index">{{ item.definition }}</li>
     </ol>
@@ -11,29 +14,28 @@
 </template>
 
 <script>
+//what toDo
+//displays returned data from api
 export default {
   name: "App",
-  text: "Search Word",
   definition: "fuck",
+  wordSearched: " ",
   jsonKey: "226a8d2c-2502-4efd-ac72-5a26eb317695",
   data: function() {
     return {
-      inventory: [
-        { name: "MacBook Air", price: 1000, definition: "no word given yet" }
-      ]
+      inventory: [{ definition: "" }]
     };
   },
   methods: {
     clearSearchBar: function() {
       let inputText = document.getElementById("searchThis");
-      //console.log(inputText.value)
 
       const word = inputText.value;
+      this.wordSearched = word;
 
-      this.text = inputText.value;
       inputText.value = "";
+      this.inventory = [];
 
-      
       this.getWordDefinitionV2(word);
     },
     newURL: function(word, ref, key) {
@@ -55,8 +57,15 @@ export default {
       );
 
       fetch(requestURL)
-      .then(response => response.json())
-      .then(data => console.log(data))
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(obj => {
+            //sets data
+            obj.shortdef.forEach(def => {
+              this.inventory.push({ definition: def });
+            });
+          });
+        });
     }
   }
 };
