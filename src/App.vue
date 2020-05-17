@@ -14,8 +14,6 @@
 </template>
 
 <script>
-//what toDo
-//displays returned data from api
 export default {
   name: "App",
   definition: "fuck",
@@ -36,7 +34,7 @@ export default {
       inputText.value = "";
       this.inventory = [];
 
-      this.getWordDefinitionV2(word);
+      this.getWordDefinition(word);
     },
     newURL: function(word, ref, key) {
       let url =
@@ -49,7 +47,7 @@ export default {
 
       return url;
     },
-    getWordDefinitionV2: function(word) {
+    getWordDefinition: function(word) {
       let requestURL = this.newURL(
         word,
         "spanish",
@@ -69,18 +67,4 @@ export default {
     }
   }
 };
-/*
-<?php
-
-  // This function grabs the definition of a word in JSON format.
-  function grab_json_definition ($word, $ref, $key) {
-    $uri = "https://dictionaryapi.com/api/v3/references/" . urlencode($ref) . "/json/" . urlencode($word) . "?key=" . urlencode($key);
-
-    return file_get_contents($uri);
-  };
-
-  $jdef = grab_json_definition("test", "spanish", "226a8d2c-2502-4efd-ac72-5a26eb317695");
-
-?>
-*/
 </script>
